@@ -1,0 +1,37 @@
+{
+  "name": "Passman",
+  "description": "Менеджер паролей Passman",
+  "version": "0.1",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "webRequest",
+    "storage"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "/images/logo192.png",
+      "32": "/images/logo192.png",
+      "48": "/images/logo192.png",
+      "128": "/images/logo192.png",
+      "192": "/images/logo192.png"
+    },
+    "default_popup": "html/popup.html"
+  },
+  "icons": {
+    "16": "/images/logo192.png",
+    "32": "/images/logo192.png",
+    "48": "/images/logo192.png",
+    "128": "/images/logo192.png",
+    "192": "/images/logo192.png"
+  },
+  "options_ui": {
+    "page": "/html/option.html",
+    "open_in_tab": false
+  },
+  "options_page": "/html/option.html",
+  "background": {
+    "service_worker": "/js/background.js"
+  }
+}
