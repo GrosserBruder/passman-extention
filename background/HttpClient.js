@@ -8,7 +8,8 @@ class _HttpClient {
   getUrl(url) {
     return `${this.baseUrl}${url}`
   }
-  async get(url, searchParams, config) {
+
+  async get(url, searchParams, config = {}) {
     const urlSearchParams = searchParams ? Object.entries(searchParams)
       .map(([key, value]) => `${key}=${value}`)
       .join('&')
@@ -38,7 +39,7 @@ class _HttpClient {
       });
   }
 
-  async put(url, data, config) {
+  async put(url, data, config = {}) {
     return fetch(this.getUrl(url), {
       method: 'put',
       headers: {
@@ -52,7 +53,7 @@ class _HttpClient {
       });
   }
 
-  async delete(url, data, config) {
+  async delete(url, data, config = {}) {
     return fetch(this.getUrl(url), {
       method: 'delete',
       headers: {
