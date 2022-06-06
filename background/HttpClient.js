@@ -2,7 +2,7 @@ class _HttpClient {
   baseUrl
 
   constructor() {
-    this.baseUrl = 'http://10.214.1.69:2058/api/v1'
+    this.baseUrl = 'http://10.214.1.247:2050/api/v1/'
   }
 
   getUrl(url) {
@@ -24,7 +24,7 @@ class _HttpClient {
       });
   }
 
-  async post(url, data, config) {
+  async post(url, data, config = {}) {
     return fetch(this.getUrl(url), {
       method: 'post',
       headers: {

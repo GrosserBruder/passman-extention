@@ -17,7 +17,13 @@ function save_options() {
     // }, 750);
     // }
   );
+
+  chrome.runtime.sendMessage({
+    type: LOGIN,
+    data: {
+      serverUrl, login, password
+    }
+  })
 }
 
-document.getElementById('save').addEventListener('click',
-  save_options);
+document.getElementById('save').addEventListener('click', save_options);
