@@ -3,20 +3,9 @@ function save_options() {
   var login = document.getElementById('login').value;
   var password = document.getElementById('password').value;
 
-  chrome.storage.sync.set({
-    serverUrl: serverUrl,
-    login: login,
-    password: password,
-  }
-    // , function () {
-    // // Update status to let user know options were saved.
-    // var status = document.getElementById('status');
-    // status.textContent = 'Options saved.';
-    // setTimeout(function () {
-    //   status.textContent = '';
-    // }, 750);
-    // }
-  );
+  chrome.storage.local.set({
+    'serverUrl': serverUrl,
+  });
 
   chrome.runtime.sendMessage({
     type: LOGIN,
@@ -26,4 +15,16 @@ function save_options() {
   })
 }
 
+chrome.action.onClicked.addListener(function (tab) {
+  console.log(tab)
+})
+
+function initial() {
+  chrome.storage.local.get('serverUrl', function (x) {
+    document.getElementById('serverUrl').value = x.serverUrl;
+  })
+}
+
 document.getElementById('save').addEventListener('click', save_options);
+
+window.addEventListener('load', initial)

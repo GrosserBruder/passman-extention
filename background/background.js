@@ -1,6 +1,6 @@
-importScripts('./HttpClient.js', '../common/messageTypes.js')
+importScripts('./Api.js', '../common/messageTypes.js')
 
-const HttpClient = new _HttpClient();
+const Api = new _Api();
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (true) {
@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
       console.log(url, login, password)
 
-      HttpClient.post('user/login', { login: login, password: password })
+      Api.login({ login: login, password: password })
         .then((...x) => {
           console.log(x)
         })
