@@ -6,12 +6,7 @@ class _Api {
   }
 
   async getPasscards(search) {
-    let params = undefined
-    if (search) {
-      params = {}
-      params.search = search
-    }
-    return this.client.get('passcards', { params: params })
+    return this.client.get('passcards', { search: search })
   }
 
   async login(data) {

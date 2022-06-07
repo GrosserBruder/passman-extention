@@ -28,11 +28,6 @@ async function getTabInfo(tabId) {
   return chrome.tabs.get(tabId)
 }
 
-function setSelectedUrl(url) {
-  const parsedUrl = new URL(url);
-  console.log(parsedUrl.host)
-}
-
 async function saveOption(request) {
   const url = request.data.serverUrl;
   const userLogin = request.data.login;
@@ -47,6 +42,24 @@ async function saveOption(request) {
       return { result: "error" }
     })
 }
+
+async function getPasscards(search) {
+  if (!search) throw new Error('search is undefined');
+  return Api.getPasscards(search);
+}
+
+async function setSelectedUrl(url) {
+  const parsedUrl = new URL(url);
+
+  if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') return;
+
+  const search = parsedUrl.host.replace(/\./g, ' ');
+
+  getPasscards(search)
+    .then(console.log)
+}
+
+let selectedTabId;
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (true) {
@@ -68,8 +81,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
   openOptionPage();
 })
 
-let selectedTabId;
-
 chrome.tabs.onActivated.addListener(function (activeInfo) {
   selectedTabId = activeInfo.tabId
   getTabInfo(activeInfo.tabId)
@@ -83,6 +94,5 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 })
 
 chrome.runtime.onStartup.addListener(function () {
-  console.log('onStartup')
   initialApi();
 })
