@@ -8,12 +8,15 @@ function save_options() {
     data: {
       serverUrl, login, password
     }
+  }, function (response) {
+    if (response.result === "success") {
+      console.log("success")
+    }
+    if (response.result === "error") {
+      console.log("error")
+    }
   })
 }
-
-chrome.action.onClicked.addListener(function (tab) {
-  console.log(tab)
-})
 
 function initial() {
   chrome.storage.local.get('serverUrl', function (x) {

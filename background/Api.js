@@ -6,22 +6,23 @@ class _Api {
   }
 
   async getPasscards(search) {
-    return this.client.get('passcards', { params: { search } })
-      .then((response) => response.data);
+    let params = undefined
+    if (search) {
+      params = {}
+      params.search = search
+    }
+    return this.client.get('passcards', { params: params })
   }
 
   async login(data) {
     return this.client.post('user/login', data)
-      .then((response) => response.data);
   }
 
   async logout() {
     return this.client.get('user/logout/')
-      .then((response) => response.data);
   }
 
   async profile() {
     return this.client.get('user/current-user/')
-      .then((response) => response.data);
   }
 }
