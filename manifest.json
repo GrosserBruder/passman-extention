@@ -8,7 +8,8 @@
     "scripting",
     "webRequest",
     "storage",
-    "webNavigation"
+    "webNavigation",
+    "tabs"
   ],
   "action": {
     "default_icon": {

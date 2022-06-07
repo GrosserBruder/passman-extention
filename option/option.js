@@ -3,12 +3,8 @@ function save_options() {
   var login = document.getElementById('login').value;
   var password = document.getElementById('password').value;
 
-  chrome.storage.local.set({
-    'serverUrl': serverUrl,
-  });
-
   chrome.runtime.sendMessage({
-    type: LOGIN,
+    type: SAVE_OPTION,
     data: {
       serverUrl, login, password
     }

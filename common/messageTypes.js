@@ -1,1 +1,1 @@
-const LOGIN = "LOGIN";
+const SAVE_OPTION = "SAVE_OPTION";
