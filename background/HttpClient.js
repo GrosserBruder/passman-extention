@@ -18,6 +18,7 @@ class _HttpClient {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       ...config,
     })
       .then((response) => {
@@ -31,6 +32,7 @@ class _HttpClient {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       ...config,
       body: JSON.stringify(data),
     })
@@ -45,6 +47,7 @@ class _HttpClient {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       ...config,
       body: JSON.stringify(data),
     })
@@ -59,6 +62,7 @@ class _HttpClient {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       ...config,
       body: JSON.stringify(data),
     })
