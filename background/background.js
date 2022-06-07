@@ -53,7 +53,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason !== "update") return;
 
-  saveOption('http://127.0.0.1:5000/api/v1/')
+  saveOption('http://10.214.1.247:2050/api/v1/')
   // openOptionPage();
 })
 
