@@ -13,10 +13,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (true) {
     case request.type === LOGIN: {
       const url = request.data.serverUrl;
-      const login = request.data.login;
-      const password = request.data.password;
+      // const login = request.data.login;
+      // const password = request.data.password;
       // ToDo: сделать прокидывание адреса сервера в Api при запуске расширения
-      login(login, password)
+      login(request.data.login, request.data.password)
       break;
     }
   }
