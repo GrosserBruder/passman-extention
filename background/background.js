@@ -1,6 +1,7 @@
 importScripts('./Api.js', '../common/messageTypes.js', '../common/openOptionPage.js')
 
 let Api = new _Api();
+const savedPasscardsMap = new Map();
 
 function initialApi() {
   getServerUrl()
@@ -43,12 +44,12 @@ async function saveOption(request) {
     })
 }
 
-async function getPasscards(search) {
-  if (!search) throw new Error('search is undefined');
+async function getPasscards(selectedUrl) {
+  if (!selectedUrl) throw new Error('selectedUrl is undefined');
 
   chrome.action.setBadgeText({ text: 'Загрузка' })
 
-  return Api.getPasscards(search)
+  return Api.getPasscards(selectedUrl)
     .then(function (passcards) {
       chrome.action.setBadgeText({ text: `${passcards.length}` })
       return passcards
@@ -58,7 +59,9 @@ async function getPasscards(search) {
     })
 }
 
-function sendToPopupPasscards(passcards) {
+async function selectedUrlChanged(selectedUrl) {
+  getPasscards(selectedUrl)
+    .then((passcards) => savedPasscardsMap.set(selectedUrl, passcards))
 }
 
 async function setSelectedUrl(url) {
@@ -66,9 +69,28 @@ async function setSelectedUrl(url) {
 
   if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') return;
 
-  const search = parsedUrl.host.replace(/\./g, ' ');
+  chrome.storage.local.set({
+    'selectedUrl': parsedUrl.host,
+  });
+}
 
-    .then(console.log)
+function setSelectedUrl(url) {
+  const parsedUrl = new URL(url);
+
+  if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') return;
+
+  chrome.storage.local.set({
+    'selectedUrl': parsedUrl.host,
+  });
+}
+
+async function getListOfPasscards() {
+  return chrome.storage.local.get('selectedUrl')
+    .then((x) => x.selectedUrl)
+    .then((selectedUrl) => savedPasscardsMap.has(selectedUrl)
+      ? savedPasscardsMap.get(selectedUrl)
+      : []
+    )
 }
 
 let selectedTabId;
@@ -80,6 +102,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         .then((result) => {
           sendResponse(result)
         });
+      break;
+    }
+    case request.type === POPUP_GET_LIST_OF_PASSCARDS: {
+      getListOfPasscards().then(sendResponse)
       break;
     }
   }
@@ -107,4 +133,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
 chrome.runtime.onStartup.addListener(function () {
   initialApi();
+})
+
+chrome.storage.onChanged.addListener(function (changes, areaName) {
+  if (areaName !== 'local') return;
+
+  if (Boolean(changes.selectedUrl)) {
+    const selectedUrl = changes.selectedUrl.newValue
+    selectedUrlChanged(selectedUrl)
+  }
 })
