@@ -20,7 +20,8 @@
       "128": "/images/logo192.png",
       "192": "/images/logo192.png"
     },
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/popup.html",
+    "default_title": "Passman"
   },
   "icons": {
     "16": "/images/logo192.png",

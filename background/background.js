@@ -45,7 +45,20 @@ async function saveOption(request) {
 
 async function getPasscards(search) {
   if (!search) throw new Error('search is undefined');
-  return Api.getPasscards(search);
+
+  chrome.action.setBadgeText({ text: 'Загрузка' })
+
+  return Api.getPasscards(search)
+    .then(function (passcards) {
+      chrome.action.setBadgeText({ text: `${passcards.length}` })
+      return passcards
+    })
+    .catch(function () {
+      chrome.action.setBadgeText({ text: '' })
+    })
+}
+
+function sendToPopupPasscards(passcards) {
 }
 
 async function setSelectedUrl(url) {
@@ -55,7 +68,6 @@ async function setSelectedUrl(url) {
 
   const search = parsedUrl.host.replace(/\./g, ' ');
 
-  getPasscards(search)
     .then(console.log)
 }
 
