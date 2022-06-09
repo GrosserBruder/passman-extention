@@ -39,6 +39,25 @@ function getPasscardListItem(passcard) {
   return tableRowContainer;
 }
 
+function show(HtmlElement, isShow) {
+  if (isShow) {
+    HtmlElement.style.display = 'block';
+    return;
+  }
+
+  HtmlElement.style.display = 'none';
+}
+
+function showLoader(isShow) {
+  const loader = document.querySelector('div.loader')
+  show(loader, isShow)
+}
+
+function showList(isShow) {
+  const table = document.querySelector('table.passcard-list')
+  show(table, isShow)
+}
+
 function setListOfPasscard(passcards) {
   const container = document.querySelector('.passcard-list > tbody');
   const childrens = passcards.map(getPasscardListItem)
@@ -46,12 +65,24 @@ function setListOfPasscard(passcards) {
   container.replaceChildren(...childrens)
 }
 
-document.querySelector('#options').addEventListener('click', function () {
+document.querySelector('button#options').addEventListener('click', function () {
   openOptionPage()
 });
 
-chrome.runtime.sendMessage({
-  type: POPUP_GET_LIST_OF_PASSCARDS
-}, function (passcards) {
-  setListOfPasscard(passcards)
-})
+async function getPasscardList() {
+  showLoader(true)
+  showList(false)
+  chrome.runtime.sendMessage({
+    type: POPUP_GET_LIST_OF_PASSCARDS
+  }, function (passcards) {
+    setListOfPasscard(passcards)
+    showLoader(false)
+    showList(true)
+  })
+}
+
+async function onLoad(event) {
+  getPasscardList()
+}
+
+window.addEventListener('load', onLoad)

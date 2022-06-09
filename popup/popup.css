@@ -5,7 +5,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   height: 300px;
-  width: 300px;
+  width: 500px;
 }
 
 table {
@@ -15,4 +15,8 @@ table {
 table td {
   border: 1px solid black;
   padding: 0px 3px;
+}
+
+.loader {
+  display: none;
 }
