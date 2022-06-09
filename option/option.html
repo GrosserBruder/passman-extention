@@ -3,22 +3,34 @@
 
 <head>
   <meta charset="utf-8" />
+  <link href="option.css" rel="stylesheet">
 </head>
 
 <body>
   <header>
-    <h3>Настройки</h3>
+    <h2>Настройки</h2>
   </header>
-  <main>
-    <label for="serverUrl">Адрес сервера</label>
-    <input id="serverUrl" name="serverUrl" />
-    <br />
-    <label for="login">Логин</label>
-    <input id="login" name="login" />
-    <br />
-    <label for="password">Пароль</label>
-    <input id="password" name="password" />
-    <button id="save">Сохранить</button>
+  <main class="option">
+    <form class="option_form">
+      <label for="serverUrl"> Адрес сервера</label>
+      <input name="serverUrl" required />
+
+      <label for="login">Логин</label>
+      <input name="login" required />
+
+      <label for="password">Пароль</label>
+      <input name="password" required />
+
+      <button type="submit">Авторизоваться</button>
+    </form>
+
+
+    <div class="authorize authorize--success">
+      Авторизация прошла успешно
+    </div>
+    <div class="authorize authorize--error">
+      Произошла ошибка
+    </div>
   </main>
 
   <script src="../common/messageTypes.js"></script>

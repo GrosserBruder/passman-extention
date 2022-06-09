@@ -22,6 +22,8 @@ function initial() {
   chrome.storage.local.get('serverUrl', function (x) {
     document.getElementById('serverUrl').value = x.serverUrl;
   })
+  document.querySelector("input[name='login']").value = 'Grosser';
+  document.querySelector("input[name='password']").value = '123Parol123';
 }
 
 document.getElementById('save').addEventListener('click', save_options);

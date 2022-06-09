@@ -1,0 +1,47 @@
+.authorize {
+  display: none;
+  text-align: center;
+  padding: 8px;
+}
+
+.authorize--success {
+  background-color: #c8e6c9;
+  color: #43a047
+}
+
+.authorize--error {
+  background-color: #ffcdd2;
+  color: #e53935
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.option_form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.option_form input {
+  margin-bottom: 10px;
+  padding: 8px;
+
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.4375em;
+  color: rgba(0, 0, 0, 0.87);
+  border-radius: 4px;
+
+  background-color: rgb(255, 255, 255);
+  border-radius: 4px;
+  border: 2px solid grey;
+}
