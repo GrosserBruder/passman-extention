@@ -39,6 +39,26 @@ function getPasscardListItem(passcard) {
   return tableRowContainer;
 }
 
+function getEmptyListItem() {
+  const tableRowContainer = document.createElement('tr')
+
+  const tableCellEmpty = document.createElement('td')
+  tableCellEmpty.textContent = "Список пуст"
+  tableCellEmpty.colSpan = 4
+
+  tableRowContainer.appendChild(tableCellEmpty)
+
+  return tableRowContainer;
+}
+
+function getPasscardList(passcards) {
+  if (passcards.length < 1) {
+    return [getEmptyListItem()]
+  }
+
+  return passcards.map(getPasscardListItem)
+}
+
 function show(HtmlElement, isShow) {
   if (isShow) {
     HtmlElement.style.display = 'block';
@@ -60,29 +80,43 @@ function showList(isShow) {
 
 function setListOfPasscard(passcards) {
   const container = document.querySelector('.passcard-list > tbody');
-  const childrens = passcards.map(getPasscardListItem)
+  const childrens = getPasscardList(passcards)
 
   container.replaceChildren(...childrens)
+}
+
+function setError(error) {
+  const container = document.querySelector('div.error')
+  console.log(error)
+
+  container.textContent = error
+  show(container, true)
 }
 
 document.querySelector('button#options').addEventListener('click', function () {
   openOptionPage()
 });
 
-async function getPasscardList() {
+async function getPasscards() {
   showLoader(true)
   showList(false)
   chrome.runtime.sendMessage({
     type: POPUP_GET_LIST_OF_PASSCARDS
-  }, function (passcards) {
-    setListOfPasscard(passcards)
+  }, function (response) {
     showLoader(false)
+
+    if (response.status === 'error') {
+      setError(response.data.message)
+      return;
+    }
+
+    setListOfPasscard(response.data.passcards)
     showList(true)
   })
 }
 
 async function onLoad(event) {
-  getPasscardList()
+  getPasscards()
 }
 
 window.addEventListener('load', onLoad)

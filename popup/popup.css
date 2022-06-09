@@ -12,11 +12,25 @@ table {
   border-collapse: collapse;
 }
 
-table td {
+table td,
+th {
   border: 1px solid black;
   padding: 0px 3px;
 }
 
 .loader {
   display: none;
+}
+
+.error {
+  background-color: #ffebee;
+  color: #b71c1c;
+  text-align: center;
+  padding: 8px;
+}
+
+#options {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }

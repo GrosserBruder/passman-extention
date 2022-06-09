@@ -10,8 +10,8 @@
 }
 
 .authorize--error {
-  background-color: #ffcdd2;
-  color: #e53935
+  background-color: #ffebee;
+  color: #b71c1c;
 }
 
 body {
@@ -26,4 +26,22 @@ body {
   width: 300px;
   justify-content: center;
   margin-bottom: 15px;
+}
+
+header {
+  text-align: center;
+
+}
+
+header>.title {
+  margin: unset;
+}
+
+header>hr {
+  margin-bottom: 15px;
+}
+
+header,
+main {
+  width: 300px;
 }

@@ -45,8 +45,9 @@ async function getPasscards(selectedUrl) {
       setBadgeText(`${passcards.length}`)
       return passcards
     })
-    .catch(function () {
+    .catch(function (error) {
       setBadgeText('')
+      throw error
     })
 }
 
@@ -57,6 +58,31 @@ async function selectedUrlChanged(selectedUrl) {
 async function getListOfPasscards() {
   return getSelectedUrl()
     .then(getPasscards)
+    .then(function (passcards) {
+      return {
+        status: 'success',
+        data: {
+          passcards: passcards
+        }
+      }
+    })
+    .catch(function (error) {
+      if (error instanceof AuthorisationError) {
+        return {
+          status: 'error',
+          data: {
+            message: error.message
+          }
+        }
+      }
+
+      return {
+        status: 'error',
+        data: {
+          message: 'Произошла ошибка'
+        }
+      }
+    })
 }
 
 let selectedTabId;
@@ -71,7 +97,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       break;
     }
     case request.type === POPUP_GET_LIST_OF_PASSCARDS: {
-      getListOfPasscards().then(sendResponse)
+      getListOfPasscards()
+        .then(sendResponse)
       break;
     }
   }

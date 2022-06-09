@@ -1,3 +1,16 @@
+importScripts('../common/errors/AuthorisationError.js')
+
+const handleError = response => {
+  if (response.redirected) {
+    throw new AuthorisationError("Необходимо авторизоваться");
+  }
+  if (!response.ok) {
+    throw Error(response.statusText);
+  } else {
+    return response.json();
+  }
+};
+
 class _HttpClient {
   baseUrl
 
@@ -21,9 +34,7 @@ class _HttpClient {
       credentials: 'include',
       ...config,
     })
-      .then((response) => {
-        return response.json();
-      });
+      .then(handleError)
   }
 
   async post(url, data, config = {}) {
@@ -36,9 +47,7 @@ class _HttpClient {
       ...config,
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        return response.json();
-      });
+      .then(handleError)
   }
 
   async put(url, data, config = {}) {
@@ -51,9 +60,7 @@ class _HttpClient {
       ...config,
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        return response.json();
-      });
+      .then(handleError)
   }
 
   async delete(url, data, config = {}) {
@@ -66,8 +73,6 @@ class _HttpClient {
       ...config,
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        return response.json();
-      });
+      .then(handleError)
   }
 }
