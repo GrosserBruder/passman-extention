@@ -27,11 +27,21 @@ async function saveOption(request) {
     })
 
   return login(userLogin, userPassword)
-    .then(function (data) {
-      return { result: "success" }
+    .then(function (profile) {
+      return {
+        status: 'success',
+        data: {
+          profile: profile
+        }
+      }
     })
     .catch(function () {
-      return { result: "error" }
+      return {
+        status: 'error',
+        data: {
+          message: 'Неверный логин или пароль'
+        }
+      }
     })
 }
 
@@ -85,19 +95,68 @@ async function getListOfPasscards() {
     })
 }
 
+async function getProfile() {
+  return Api.profile()
+    .then(function (profile) {
+      return {
+        status: 'success',
+        data: {
+          profile: profile
+        }
+      }
+    })
+    .catch(function (error) {
+      if (error instanceof AuthorisationError) {
+        return {
+          status: 'error',
+          data: {
+            message: error.message
+          }
+        }
+      }
+
+      return {
+        status: 'error',
+        data: {
+          message: 'Произошла ошибка'
+        }
+      }
+    })
+}
+
+async function logout() {
+  return Api.logout()
+    .catch(function () {
+      return {
+        status: 'error',
+        data: {
+          message: 'Произошла ошибка'
+        }
+      }
+    })
+}
+
 let selectedTabId;
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (true) {
     case request.type === SAVE_OPTION: {
       saveOption(request)
-        .then((result) => {
-          sendResponse(result)
-        });
+        .then(sendResponse);
       break;
     }
     case request.type === POPUP_GET_LIST_OF_PASSCARDS: {
       getListOfPasscards()
+        .then(sendResponse)
+      break;
+    }
+    case request.type === GET_PROFILE: {
+      getProfile()
+        .then(sendResponse)
+      break;
+    }
+    case request.type === LOGOUT: {
+      logout()
         .then(sendResponse)
       break;
     }

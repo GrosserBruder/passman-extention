@@ -30,18 +30,27 @@ body {
 
 header {
   text-align: center;
-
 }
 
 header>.title {
   margin: unset;
 }
 
-header>hr {
+.profile {
+  display: flex;
+  justify-content: space-between;
+}
+
+main>.profile_container>hr {
   margin-bottom: 15px;
 }
 
 header,
 main {
   width: 300px;
+}
+
+.profile_not_authorize,
+.profile {
+  display: none;
 }

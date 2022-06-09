@@ -14,7 +14,7 @@ class _Api {
   }
 
   async logout() {
-    return this.client.get('user/logout/')
+    return this.client.get('user/logout')
   }
 
   async profile() {

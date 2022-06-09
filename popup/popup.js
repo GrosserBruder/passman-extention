@@ -87,7 +87,6 @@ function setListOfPasscard(passcards) {
 
 function setError(error) {
   const container = document.querySelector('div.error')
-  console.log(error)
 
   container.textContent = error
   show(container, true)
