@@ -41,8 +41,6 @@ function initial() {
   chrome.storage.local.get('serverUrl', function (x) {
     document.querySelector("input[name='serverUrl']").value = x.serverUrl;
   })
-  document.querySelector("input[name='login']").value = 'Grosser';
-  document.querySelector("input[name='password']").value = '123Parol123';
 }
 
 document.querySelector('form.option_form').addEventListener('submit', save_options);
