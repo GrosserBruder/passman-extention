@@ -51,7 +51,7 @@ table td:last-child {
   top: 10px;
 }
 
-button {
+table button {
   line-height: 1.25;
   text-transform: uppercase;
   min-width: 0;
