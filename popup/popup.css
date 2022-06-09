@@ -3,19 +3,34 @@
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
+.popup>main {
   height: 300px;
   width: 500px;
+  overflow: auto;
 }
 
 table {
   border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
 }
 
 table td,
 th {
   border: 1px solid black;
   padding: 0px 3px;
+  width: 150px;
+}
+
+table td:last-child,
+th:last-child {
+  width: unset;
+}
+
+table td:last-child {
+  padding: 5px;
 }
 
 .loader {
@@ -23,6 +38,7 @@ th {
 }
 
 .error {
+  display: none;
   background-color: #ffebee;
   color: #b71c1c;
   text-align: center;
@@ -33,4 +49,11 @@ th {
   position: absolute;
   right: 10px;
   top: 10px;
+}
+
+button {
+  line-height: 1.25;
+  text-transform: uppercase;
+  min-width: 0;
+  padding: 4px;
 }
