@@ -1,8 +1,16 @@
 function onUseButtonClick(passcard) {
-  console.log(passcard)
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(
+      tabs[0].id,
+      {
+        type: PASTE_PASSCARD_TO_FORM,
+        data: { passcard }
+      }
+    );
+  });
 }
 
-function getPasscardItem(passcard) {
+function getPasscardListItem(passcard) {
   const tableRowContainer = document.createElement('tr')
 
   const tableCellName = document.createElement('td')
@@ -33,7 +41,7 @@ function getPasscardItem(passcard) {
 
 function setListOfPasscard(passcards) {
   const container = document.querySelector('.passcard-list > tbody');
-  const childrens = passcards.map(getPasscardItem)
+  const childrens = passcards.map(getPasscardListItem)
 
   container.replaceChildren(...childrens)
 }
@@ -45,7 +53,5 @@ document.querySelector('#options').addEventListener('click', function () {
 chrome.runtime.sendMessage({
   type: POPUP_GET_LIST_OF_PASSCARDS
 }, function (passcards) {
-  console.log(passcards)
   setListOfPasscard(passcards)
 })
-

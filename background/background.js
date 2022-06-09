@@ -1,7 +1,6 @@
 importScripts('./Api.js', '../common/messageTypes.js', '../common/openOptionPage.js')
 
 let Api = new _Api();
-const savedPasscardsMap = new Map();
 
 function initialApi() {
   getServerUrl()
@@ -61,21 +60,16 @@ async function getPasscards(selectedUrl) {
 
 async function selectedUrlChanged(selectedUrl) {
   getPasscards(selectedUrl)
-    .then((passcards) => savedPasscardsMap.set(selectedUrl, passcards))
 }
 
 async function setSelectedUrl(url) {
-  const parsedUrl = new URL(url);
+  let parsedUrl;
 
-  if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') return;
-
-  chrome.storage.local.set({
-    'selectedUrl': parsedUrl.host,
-  });
-}
-
-function setSelectedUrl(url) {
-  const parsedUrl = new URL(url);
+  try {
+    parsedUrl = new URL(url);
+  } catch (e) {
+    return;
+  }
 
   if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') return;
 
@@ -87,10 +81,7 @@ function setSelectedUrl(url) {
 async function getListOfPasscards() {
   return chrome.storage.local.get('selectedUrl')
     .then((x) => x.selectedUrl)
-    .then((selectedUrl) => savedPasscardsMap.has(selectedUrl)
-      ? savedPasscardsMap.get(selectedUrl)
-      : []
-    )
+    .then(getPasscards)
 }
 
 let selectedTabId;
