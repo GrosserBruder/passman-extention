@@ -1,4 +1,4 @@
-importScripts('./Api.js', '../common/messageTypes.js', '../common/openOptionPage.js')
+importScripts('./Api.js', '../common/messageTypes.js', '../common/openOptionPage.js', './helpers.js')
 
 let Api = new _Api();
 
@@ -12,18 +12,6 @@ async function login(login, password) {
   return Api.login({ login: login, password: password })
 }
 
-async function getServerUrl() {
-  return chrome.storage.local.get('serverUrl')
-}
-
-function saveServerUrl(serverUrl) {
-  chrome.storage.local.set({
-    'serverUrl': serverUrl,
-  });
-
-  Api = new _Api(serverUrl)
-}
-
 async function getTabInfo(tabId) {
   return chrome.tabs.get(tabId)
 }
@@ -33,7 +21,11 @@ async function saveOption(request) {
   const userLogin = request.data.login;
   const userPassword = request.data.password;
 
-  saveServerUrl(url)
+  await setServerUrl(url)
+    .then(function (serverUrl) {
+      Api = new _Api(serverUrl)
+    })
+
   return login(userLogin, userPassword)
     .then(function (data) {
       return { result: "success" }
@@ -46,41 +38,24 @@ async function saveOption(request) {
 async function getPasscards(selectedUrl) {
   if (!selectedUrl) throw new Error('selectedUrl is undefined');
 
-  chrome.action.setBadgeText({ text: 'Загрузка' })
+  setBadgeText('Загрузка')
 
   return Api.getPasscards(selectedUrl)
     .then(function (passcards) {
-      chrome.action.setBadgeText({ text: `${passcards.length}` })
+      setBadgeText(`${passcards.length}`)
       return passcards
     })
     .catch(function () {
-      chrome.action.setBadgeText({ text: '' })
+      setBadgeText('')
     })
 }
 
 async function selectedUrlChanged(selectedUrl) {
-  getPasscards(selectedUrl)
-}
-
-async function setSelectedUrl(url) {
-  let parsedUrl;
-
-  try {
-    parsedUrl = new URL(url);
-  } catch (e) {
-    return;
-  }
-
-  if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') return;
-
-  chrome.storage.local.set({
-    'selectedUrl': parsedUrl.host,
-  });
+  return getPasscards(selectedUrl)
 }
 
 async function getListOfPasscards() {
-  return chrome.storage.local.get('selectedUrl')
-    .then((x) => x.selectedUrl)
+  return getSelectedUrl()
     .then(getPasscards)
 }
 
@@ -106,7 +81,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason !== "update") return;
 
-  saveServerUrl('http://10.214.1.247:2050/api/v1/')
+  setServerUrl('http://10.214.1.247:2050/api/v1/')
   openOptionPage();
 })
 
