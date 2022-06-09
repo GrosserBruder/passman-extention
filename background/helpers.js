@@ -1,5 +1,5 @@
 async function setBadgeText(text) {
-  chrome.action.setBadgeText({ text: 'Загрузка' })
+  chrome.action.setBadgeText({ text })
 }
 
 async function getServerUrl() {
@@ -23,16 +23,16 @@ async function setSelectedUrl(url) {
   try {
     parsedUrl = new URL(url);
   } catch (e) {
-    // throw new Error("url is not correct");
+    return false
   }
 
   if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
-    // return Promise.reject('url is not find http or https protocol');
+    return false
   }
 
   return chrome.storage.local.set({
     'selectedUrl': parsedUrl.host,
   }).then(function () {
-    return parsedUrl.host;
+    return true
   });
 }
