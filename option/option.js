@@ -1,6 +1,8 @@
 function show(HtmlElement, isShow, display) {
   if (isShow) {
     HtmlElement.style.display = display || 'block';
+    return;
+  }
 
   HtmlElement.style.display = 'none';
 }
