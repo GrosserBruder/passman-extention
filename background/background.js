@@ -8,6 +8,9 @@ function initialApi() {
     .catch(() => Api = new _Api())
 }
 
+const savedPasscardsByUrl = new Map();
+let isAuthorizationFailed = false;
+
 async function login(login, password) {
   return Api.login({ login: login, password: password })
 }
@@ -57,9 +60,17 @@ async function getPasscards(selectedUrl) {
   return Api.getPasscards(selectedUrl)
     .then(function (passcards) {
       setBadgeText(`${passcards.length}`)
+      if (isAuthorizationFailed) {
+        isAuthorizationFailed = false
+        setAuthorized()
+      }
       return passcards
     })
     .catch(function (error) {
+      if (error instanceof AuthorisationError) {
+        isAuthorizationFailed = true;
+        setNeedAuthorization();
+      }
       setBadgeText('')
       throw error
     })
@@ -67,28 +78,24 @@ async function getPasscards(selectedUrl) {
 
 async function selectedUrlChanged(selectedUrl) {
   return getPasscards(selectedUrl)
+    .then(function (passcards) {
+      savedPasscardsByUrl.clear();
+      savedPasscardsByUrl.set(selectedUrl, passcards)
+    })
 }
 
 async function getListOfPasscards() {
   return getSelectedUrl()
-    .then(getPasscards)
-    .then(function (passcards) {
+    .then(function (selectedUrl) {
       return {
         status: 'success',
         data: {
-          passcards: passcards
+          passcards: savedPasscardsByUrl.get(selectedUrl)
         }
       }
     })
     .catch(function (error) {
-      if (error instanceof AuthorisationError) {
-        return {
-          status: 'error',
-          data: {
-            message: error.message
-          }
-        }
-      }
+
 
       return {
         status: 'error',
@@ -171,7 +178,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason !== "update") return;
 
-  setServerUrl('http://127.0.0.1:1030/api/v1/')
+  setServerUrl('http://127.0.0.1:1030/api/v1')
   openOptionPage();
 })
 

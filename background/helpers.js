@@ -1,5 +1,17 @@
 async function setBadgeText(text) {
   chrome.action.setBadgeText({ text })
+  // chrome.action.setIcon({ path: '../images/logo.png' })
+}
+
+async function setNeedAuthorization() {
+  setBadgeText('')
+  chrome.action.setTitle({ title: 'Требуется авторизация' })
+  chrome.action.setIcon({ path: '../images/error.png' })
+}
+
+async function setAuthorized() {
+  chrome.action.setTitle({ title: 'Passman' })
+  chrome.action.setIcon({ path: '../images/logo.png' })
 }
 
 async function getServerUrl() {
