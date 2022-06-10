@@ -167,7 +167,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason !== "update") return;
 
-  setServerUrl('http://10.214.1.247:2050/api/v1/')
+  setServerUrl('http://127.0.0.1:1030/api/v1/')
   openOptionPage();
 })
 
