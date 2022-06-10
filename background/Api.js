@@ -1,12 +1,17 @@
 importScripts('./HttpClient.js')
 
 class _Api {
+  getPasscardsAbortController;
+
   constructor(baseUrl) {
     this.client = new _HttpClient(baseUrl)
   }
 
+
   async getPasscards(search) {
-    return this.client.get('passcards', { search: search })
+    this.getPasscardsAbortController = new AbortController();
+
+    return this.client.get('passcards', { search: search }, { signal: this.getPasscardsAbortController.signal })
   }
 
   async login(data) {

@@ -48,6 +48,10 @@ async function saveOption(request) {
 async function getPasscards(selectedUrl) {
   if (!selectedUrl) throw new Error('selectedUrl is undefined');
 
+  if (Api.getPasscardsAbortController) {
+    Api.getPasscardsAbortController.abort()
+  }
+
   setBadgeText('Загрузка')
 
   return Api.getPasscards(selectedUrl)
