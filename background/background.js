@@ -19,14 +19,14 @@ async function getTabInfo(tabId) {
   return chrome.tabs.get(tabId)
 }
 
-async function saveOption(request) {
-  const url = request.data.serverUrl;
-  const userLogin = request.data.login;
-  const userPassword = request.data.password;
+async function saveOption(data) {
+  const url = data.serverUrl;
+  const userLogin = data.login;
+  const userPassword = data.password;
 
   await setServerUrl(url)
-    .then(function (serverUrl) {
-      Api = new _Api(serverUrl)
+    .then(function () {
+      Api = new _Api(url)
     })
 
   return login(userLogin, userPassword)
@@ -150,7 +150,11 @@ let selectedTabId;
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (true) {
     case request.type === SAVE_OPTION: {
-      saveOption(request)
+      saveOption({
+        serverUrl: request.data.serverUrl,
+        login: request.data.login,
+        password: request.data.password,
+      })
         .then(sendResponse);
       break;
     }
