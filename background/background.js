@@ -95,8 +95,6 @@ async function getListOfPasscards() {
       }
     })
     .catch(function (error) {
-
-
       return {
         status: 'error',
         data: {
@@ -168,6 +166,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
     case request.type === LOGOUT: {
       logout()
+        .then(sendResponse)
+      break;
+    }
+    case request.type === POPUP_CHECK_AUTHORIZATION: {
+      getProfile()
         .then(sendResponse)
       break;
     }
