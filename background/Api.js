@@ -10,18 +10,18 @@ class _Api {
   async getPasscards(search) {
     this.getPasscardsAbortController = new AbortController();
 
-    return this.client.get('passcards', { search: search }, { signal: this.getPasscardsAbortController.signal })
+    return this.client.get('/passcards', { search: search }, { signal: this.getPasscardsAbortController.signal })
   }
 
   async login(data) {
-    return this.client.post('user/login', data)
+    return this.client.post('/user/login', data)
   }
 
   async logout() {
-    return this.client.get('user/logout')
+    return this.client.get('/user/logout')
   }
 
   async profile() {
-    return this.client.get('user/current-user/')
+    return this.client.get('/user/current-user/')
   }
 }
