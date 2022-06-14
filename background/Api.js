@@ -7,7 +7,6 @@ class _Api {
     this.client = new _HttpClient(baseUrl)
   }
 
-
   async getPasscards(search) {
     this.getPasscardsAbortController = new AbortController();
 

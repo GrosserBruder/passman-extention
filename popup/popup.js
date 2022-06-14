@@ -114,8 +114,20 @@ async function getPasscards() {
   })
 }
 
+async function checkAuthorization() {
+  chrome.runtime.sendMessage({
+    type: POPUP_CHECK_AUTHORIZATION
+  }, function (response) {
+    if (response.status === 'error') {
+      setError(response.data.message)
+      return;
+    }
+  })
+}
+
 async function onLoad(event) {
   getPasscards()
+  checkAuthorization()
 }
 
 window.addEventListener('load', onLoad)
