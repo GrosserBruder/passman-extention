@@ -16,7 +16,7 @@ function pastePasscardToForm(passcard) {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (true) {
-    // check messageTypes
+    // check messageTypes file
     case request.type === "PASTE_PASSCARD_TO_FORM": {
       pastePasscardToForm(request.data.passcard)
       break;

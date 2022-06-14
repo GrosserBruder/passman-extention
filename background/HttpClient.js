@@ -15,7 +15,7 @@ class _HttpClient {
   baseUrl
 
   constructor(baseUrl) {
-    this.baseUrl = baseUrl || 'http://10.214.1.247:2050/api/v1/'
+    this.baseUrl = baseUrl
   }
 
   getUrl(url) {
